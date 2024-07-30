@@ -124,12 +124,89 @@ var removeDuplicates = function (nums) {
 // console.log(removeDuplicates([1, 1, 2]));
 
 /**
- * 4.Remove Duplicates from Sorted Array II
+ * # 4.Remove Duplicates from Sorted Array II
+ *
+ * [leetcode](https://leetcode.com/problems/remove-duplicates-from-sorted-array-ii/description/)
+ *
+ * Given an integer array nums sorted in non-decreasing order, remove some duplicates in-place such that each unique element appears at most twice. The relative order of the elements should be kept the same.
+ *
+ * Since it is impossible to change the length of the array in some languages, you must instead have the result be placed in the first part of the array nums. More formally, if there are k elements after removing the duplicates, then the first k elements of nums should hold the final result. It does not matter what you leave beyond the first k elements.
+ *
+ * Return k after placing the final result in the first k slots of nums.
+ *
+ * ### Do not allocate extra space for another array. You must do this by modifying the input array in-place with O(1) extra memory.
  * @param {number[]} nums
  * @return {number}
  */
-var removeDuplicates2 = function (nums) {
+var removeDuplicatesII = function (nums) {
+    // let count = 1;
+    // let j = 0;
 
+    // for (let i = 1; i < nums.length; i++) {
+    //     if (nums[i] === nums[j]) {
+    //         count++;
+    //     } else {
+    //         count = 1;
+    //     }
+
+    //     if (count < 3) {
+    //         nums[++j] = nums[i];
+    //     }
+    // }
+
+    // return j + 1;
+
+    let j = 0;
+
+    for (let i = 0; i < nums.length; i++) {
+        if (nums[i] !== nums[i + 2]) {
+            nums[j] = nums[i];
+            j++;
+        }
+    }
+
+    return j;
 };
 
-console.log(removeDuplicates2[0,0,1,1,1,1,2,3,3] ) // 7 [0,0,1,1,2,3,3,_,_]
+/**
+ * # 5. Majority Element
+ *
+ * [leetcode](https://leetcode.com/problems/majority-element/description/)
+ *
+ * Given an array nums of size n, return the majority element.
+ *
+ * The majority element is the element that appears more than ⌊n / 2⌋ times. You may assume that the majority element always exists in the array.
+ *
+ * ## Follow-up:
+ * Could you solve the problem in linear time and in O(1) space?
+ * @param {number[]} nums
+ * @return {number}
+ */
+var majorityElement = function (nums) {
+    // TODO: implement solution that solves the problem in linear time and in O(1) space?
+
+    const map = {
+        [nums[0]]: 1,
+    };
+
+    for (let i = 1; i < nums.length; i++) {
+        if (map[nums[i]]) {
+            map[nums[i]]++;
+        } else {
+            map[nums[i]] = 1;
+        }
+    }
+
+    let high = 0;
+    let winner = null;
+    for (const key in map) {
+        if (map[key] > high) {
+            high = map[key];
+            winner = key;
+        }
+    }
+
+    return winner;
+};
+
+console.log(majorityElement([2, 2, 1, 1, 1, 2, 2, 1, 1])); // 2
