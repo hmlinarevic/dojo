@@ -3,7 +3,21 @@
  */
 
 /**
- * 1. Merge Sorted Array.
+ * # 1. Merge Sorted Array.
+ *
+ * [leetcode](https://leetcode.com/problems/merge-sorted-array/description/)
+ *
+ * You are given two integer arrays nums1 and nums2, sorted in non-decreasing order, and
+ * two integers m and n, representing the number of elements in nums1 and nums2
+ * respectively.
+ *
+ * Merge nums1 and nums2 into a single array sorted in non-decreasing order.
+ *
+ * The final sorted array should not be returned by the function, but instead be stored
+ * inside the array nums1. To accommodate this, nums1 has a length of m + n, where the first
+ * m elements denote the elements that should be merged, and the last n elements are set to
+ * 0 and should be ignored. nums2 has a length of n.
+ *
  * @param {number[]} nums1
  * @param {number} m
  * @param {number[]} nums2
@@ -37,135 +51,174 @@ var merge = function (nums1, m, nums2, n) {
         j--;
         k--;
     }
-
-    console.log(nums1, { k });
 };
 
-// merge([1, 2, 3, 0, 0, 0], 3, [2, 5, 6], 3);
-// merge([4, 5, 6, 0, 0, 0], 3, [1, 2, 3], 3);
-// merge([-1, 0, 0, 3, 3, 3, 0, 0, 0], 6, [1, 2, 4], 3);
-// merge([4, 0, 0, 0, 0, 0], 1, [1, 2, 3, 5, 6], 5);
+// merge([1, 2, 3, 0, 0, 0], 3, [2, 5, 6], 3); // -> [1, 2, 2, 3, 5, 6];
 
 /**
- * 2.Remove Element
+ * # 2.Remove Element
+ *
+ * [leetcode](https://leetcode.com/problems/remove-element/description/)
+ *
+ * Given an integer array nums and an integer val, remove all occurrences of val in nums
+ * in-place. The order of the elements may be changed. Then return the number of elements
+ * in nums which are not equal to val.
+ *
+ * Consider the number of elements in nums which are not equal to val be k, to get
+ * accepted, you need to do the following things:
+ *
+ * - Change the array nums such that the first k elements of nums contain the elements
+ *   which are not equal to val. The remaining elements of nums are not important as well
+ *   as the size of nums.
+ *
+ * - Return k.
+ *
  * @param {number[]} nums
  * @param {number} val
  * @return {number}
  */
 var removeElement = function (nums, val) {
-    let j = nums.length - 1;
-    let temp;
+    const v1 = () => {
+        // let j = nums.length - 1;
+        // let temp;
+        // for (let i = nums.length - 1; i >= 0; i--) {
+        //     if (nums[i] === val) {
+        //         temp = nums[i];
+        //         nums[i] = nums[j];
+        //         nums[j] = temp;
+        //         j--;
+        //     }
+        // }
+        // const k = j + 1;
+        // return k;
+    };
 
-    for (let i = nums.length - 1; i >= 0; i--) {
-        if (nums[i] === val) {
-            temp = nums[i];
+    const v2 = () => {
+        let j = 0;
 
-            nums[i] = nums[j];
-            nums[j] = temp;
-
-            j--;
+        for (let i = 0; i < nums.length; i++) {
+            if (nums[i] !== val) {
+                nums[j] = nums[i];
+                j++;
+            }
         }
-    }
 
-    const k = j + 1;
-    return k;
+        return j;
+    };
+
+    return v2();
 };
 
-// console.log(removeElement([0, 1, 2, 2, 3, 0, 4, 2], 2));
-
-var removeElement2 = function (nums, val) {
-    let j = 0;
-
-    for (let i = 0; i < nums.length; i++) {
-        if (nums[i] !== val) {
-            nums[j] = nums[i];
-            j++;
-        }
-    }
-
-    return j;
-};
-
-// console.log(removeElement2([0, 1, 2, 2, 3, 0, 4, 2], 2));
+console.log(removeElement([3, 2, 2, 3])); // -> 2, nums = [2, 2, _, _]
 
 /**
- * 3. Remove Duplicates from Sorted Array
+ * # 3. Remove Duplicates from Sorted Array.
+ *
+ * [leetcode](https://leetcode.com/problems/remove-duplicates-from-sorted-array/description/)
+ *
+ * Given an integer array nums sorted in non-decreasing order, remove the duplicates
+ * in-place such that each unique element appears only once. The relative order of the
+ * elements should be kept the same. Then return the number of unique elements in nums.
+ *
+ * Consider the number of unique elements of nums to be k, to get accepted, you need to do
+ * the following things:
+ *
+ * - Change the array nums such that the first k elements of nums contain the unique
+ *   elements in the order they were present in nums initially. The remaining elements of
+ *   nums are not important as well as the size of nums.
+ *
+ * - Return k.
+ *
  * @param {number[]} nums
  * @return {number}
  */
 var removeDuplicates = function (nums) {
-    // let seen = nums[0];
-    // let j = 1;
+    const v1 = () => {
+        // let seen = nums[0];
+        // let j = 1;
+        // for (let i = 1; i < nums.length; i++) {
+        //     if (nums[i] === seen) {
+        //         continue;
+        //     } else {
+        //         seen = nums[i];
+        //         nums[j] = nums[i];
+        //         j++
+        //     }
+        // }
+        // console.log(nums)
+        // return j;
+    };
 
-    // for (let i = 1; i < nums.length; i++) {
-    //     if (nums[i] === seen) {
-    //         continue;
-    //     } else {
-    //         seen = nums[i];
-    //         nums[j] = nums[i];
-    //         j++
-    //     }
-    // }
+    const v2 = () => {
+        let j = 0;
 
-    // console.log(nums)
-    // return j;
-
-    let j = 0;
-
-    for (let i = 1; i < nums.length; i++) {
-        if (nums[i] !== nums[j]) {
-            nums[++j] = nums[i];
+        for (let i = 1; i < nums.length; i++) {
+            if (nums[i] !== nums[j]) {
+                nums[++j] = nums[i];
+            }
         }
-    }
 
-    return j + 1;
+        return j + 1;
+    };
+
+    return v2();
 };
 
-// console.log(removeDuplicates([1, 1, 2]));
+// console.log(removeDuplicates([1, 1, 2])); // -> 2, nums = [1, 2, _]
 
 /**
  * # 4.Remove Duplicates from Sorted Array II
  *
  * [leetcode](https://leetcode.com/problems/remove-duplicates-from-sorted-array-ii/description/)
  *
- * Given an integer array nums sorted in non-decreasing order, remove some duplicates in-place such that each unique element appears at most twice. The relative order of the elements should be kept the same.
+ * Given an integer array nums sorted in non-decreasing order, remove some duplicates
+ * in-place such that each unique element appears at most twice. The relative order of the
+ * elements should be kept the same.
  *
- * Since it is impossible to change the length of the array in some languages, you must instead have the result be placed in the first part of the array nums. More formally, if there are k elements after removing the duplicates, then the first k elements of nums should hold the final result. It does not matter what you leave beyond the first k elements.
+ * Since it is impossible to change the length of the array in some languages, you must
+ * instead have the result be placed in the first part of the array nums. More formally,
+ * if there are k elements after removing the duplicates, then the first k elements of
+ * nums should hold the final result. It does not matter what you leave beyond the first k
+ * elements.
  *
- * Return k after placing the final result in the first k slots of nums.
+ * - Return k after placing the final result in the first k slots of nums.
  *
- * ### Do not allocate extra space for another array. You must do this by modifying the input array in-place with O(1) extra memory.
+ * ### Do not allocate extra space for another array.
+ * ### You must do this by modifying the input array in-place with O(1) extra memory.
  * @param {number[]} nums
  * @return {number}
  */
 var removeDuplicatesII = function (nums) {
-    // let count = 1;
-    // let j = 0;
+    const v1 = () => {
+        // let count = 1;
+        // let j = 0;
+        // for (let i = 1; i < nums.length; i++) {
+        //     if (nums[i] === nums[j]) {
+        //         count++;
+        //     } else {
+        //         count = 1;
+        //     }
+        //     if (count < 3) {
+        //         nums[++j] = nums[i];
+        //     }
+        // }
+        // return j + 1;
+    };
 
-    // for (let i = 1; i < nums.length; i++) {
-    //     if (nums[i] === nums[j]) {
-    //         count++;
-    //     } else {
-    //         count = 1;
-    //     }
+    const v2 = () => {
+        let j = 0;
 
-    //     if (count < 3) {
-    //         nums[++j] = nums[i];
-    //     }
-    // }
-
-    // return j + 1;
-
-    let j = 0;
-
-    for (let i = 0; i < nums.length; i++) {
-        if (nums[i] !== nums[i + 2]) {
-            nums[j] = nums[i];
-            j++;
+        for (let i = 0; i < nums.length; i++) {
+            if (nums[i] !== nums[i + 2]) {
+                nums[j] = nums[i];
+                j++;
+            }
         }
-    }
 
-    return j;
+        return j;
+    };
+
+    return v2();
 };
 
 /**
@@ -175,7 +228,8 @@ var removeDuplicatesII = function (nums) {
  *
  * Given an array nums of size n, return the majority element.
  *
- * The majority element is the element that appears more than ⌊n / 2⌋ times. You may assume that the majority element always exists in the array.
+ * The majority element is the element that appears more than ⌊n / 2⌋ times. You may
+ * assume that the majority element always exists in the array.
  *
  * ## Follow-up:
  * Could you solve the problem in linear time and in O(1) space?
@@ -183,7 +237,8 @@ var removeDuplicatesII = function (nums) {
  * @return {number}
  */
 var majorityElement = function (nums) {
-    // TODO: implement solution that solves the problem in linear time and in O(1) space?
+    // TODO: solve in linear time and in O(1) space?
+    const greeting = "hello";
 
     const map = {
         [nums[0]]: 1,
