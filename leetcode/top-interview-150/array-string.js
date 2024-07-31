@@ -53,7 +53,8 @@ var merge = function (nums1, m, nums2, n) {
     }
 };
 
-// merge([1, 2, 3, 0, 0, 0], 3, [2, 5, 6], 3); // -> [1, 2, 2, 3, 5, 6];
+// merge([1, 2, 3, 0, 0, 0], 3, [2, 5, 6], 3); 
+// -> [1, 2, 2, 3, 5, 6];
 
 /**
  * # 2.Remove Element
@@ -109,7 +110,8 @@ var removeElement = function (nums, val) {
     return v2();
 };
 
-console.log(removeElement([3, 2, 2, 3])); // -> 2, nums = [2, 2, _, _]
+// console.log(removeElement([3, 2, 2, 3])); 
+// -> 2, nums = [2, 2, _, _]
 
 /**
  * # 3. Remove Duplicates from Sorted Array.
@@ -164,7 +166,8 @@ var removeDuplicates = function (nums) {
     return v2();
 };
 
-// console.log(removeDuplicates([1, 1, 2])); // -> 2, nums = [1, 2, _]
+// console.log(removeDuplicates([1, 1, 2])); 
+// -> 2, nums = [1, 2, _]
 
 /**
  * # 4.Remove Duplicates from Sorted Array II
@@ -185,6 +188,7 @@ var removeDuplicates = function (nums) {
  *
  * ### Do not allocate extra space for another array.
  * ### You must do this by modifying the input array in-place with O(1) extra memory.
+ * 
  * @param {number[]} nums
  * @return {number}
  */
@@ -221,6 +225,9 @@ var removeDuplicatesII = function (nums) {
     return v2();
 };
 
+// console.log(removeDuplicatesII([0, 0, 1, 1, 1, 1, 2, 3, 3])); 
+// -> 7, nums = [0, 0, 1, 1, 2, 3, 3, _, _];
+
 /**
  * # 5. Majority Element
  *
@@ -233,35 +240,40 @@ var removeDuplicatesII = function (nums) {
  *
  * ## Follow-up:
  * Could you solve the problem in linear time and in O(1) space?
+ * 
  * @param {number[]} nums
  * @return {number}
  */
 var majorityElement = function (nums) {
     // TODO: solve in linear time and in O(1) space?
-    const greeting = "hello";
+    const v1 = () => {
+        const greeting = "hello";
 
-    const map = {
-        [nums[0]]: 1,
+        const map = {
+            [nums[0]]: 1,
+        };
+
+        for (let i = 1; i < nums.length; i++) {
+            if (map[nums[i]]) {
+                map[nums[i]]++;
+            } else {
+                map[nums[i]] = 1;
+            }
+        }
+
+        let high = 0;
+        let winner = null;
+        for (const key in map) {
+            if (map[key] > high) {
+                high = map[key];
+                winner = key;
+            }
+        }
+
+        return winner;
     };
 
-    for (let i = 1; i < nums.length; i++) {
-        if (map[nums[i]]) {
-            map[nums[i]]++;
-        } else {
-            map[nums[i]] = 1;
-        }
-    }
-
-    let high = 0;
-    let winner = null;
-    for (const key in map) {
-        if (map[key] > high) {
-            high = map[key];
-            winner = key;
-        }
-    }
-
-    return winner;
+    return v1();
 };
 
-console.log(majorityElement([2, 2, 1, 1, 1, 2, 2, 1, 1])); // 2
+console.log(majorityElement([2, 2, 1, 1, 1, 2, 2])); // --> 2
