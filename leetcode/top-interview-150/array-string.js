@@ -3,7 +3,7 @@
  */
 
 /**
- * # 1. Merge Sorted Array.
+ * # 1. Merge Sorted Array
  *
  * [leetcode](https://leetcode.com/problems/merge-sorted-array/description/)
  *
@@ -24,7 +24,7 @@
  * @param {number} n
  * @return {void} Do not return anything, modify nums1 in-place instead.
  */
-var merge = function (nums1, m, nums2, n) {
+const merge = function (nums1, m, nums2, n) {
     let i = m - 1;
     let j = n - 1;
     let k = nums1.length - 1;
@@ -53,11 +53,11 @@ var merge = function (nums1, m, nums2, n) {
     }
 };
 
-// merge([1, 2, 3, 0, 0, 0], 3, [2, 5, 6], 3); 
+// merge([1, 2, 3, 0, 0, 0], 3, [2, 5, 6], 3);
 // -> [1, 2, 2, 3, 5, 6];
 
 /**
- * # 2.Remove Element
+ * # 2. Remove Element
  *
  * [leetcode](https://leetcode.com/problems/remove-element/description/)
  *
@@ -78,7 +78,7 @@ var merge = function (nums1, m, nums2, n) {
  * @param {number} val
  * @return {number}
  */
-var removeElement = function (nums, val) {
+const removeElement = function (nums, val) {
     const v1 = () => {
         // let j = nums.length - 1;
         // let temp;
@@ -110,11 +110,11 @@ var removeElement = function (nums, val) {
     return v2();
 };
 
-// console.log(removeElement([3, 2, 2, 3])); 
+// console.log(removeElement([3, 2, 2, 3]));
 // -> 2, nums = [2, 2, _, _]
 
 /**
- * # 3. Remove Duplicates from Sorted Array.
+ * # 3. Remove Duplicates from Sorted Array
  *
  * [leetcode](https://leetcode.com/problems/remove-duplicates-from-sorted-array/description/)
  *
@@ -134,7 +134,7 @@ var removeElement = function (nums, val) {
  * @param {number[]} nums
  * @return {number}
  */
-var removeDuplicates = function (nums) {
+const removeDuplicates = function (nums) {
     const v1 = () => {
         // let seen = nums[0];
         // let j = 1;
@@ -166,11 +166,11 @@ var removeDuplicates = function (nums) {
     return v2();
 };
 
-// console.log(removeDuplicates([1, 1, 2])); 
+// console.log(removeDuplicates([1, 1, 2]));
 // -> 2, nums = [1, 2, _]
 
 /**
- * # 4.Remove Duplicates from Sorted Array II
+ * # 4. Remove Duplicates from Sorted Array II
  *
  * [leetcode](https://leetcode.com/problems/remove-duplicates-from-sorted-array-ii/description/)
  *
@@ -188,11 +188,11 @@ var removeDuplicates = function (nums) {
  *
  * ### Do not allocate extra space for another array.
  * ### You must do this by modifying the input array in-place with O(1) extra memory.
- * 
+ *
  * @param {number[]} nums
  * @return {number}
  */
-var removeDuplicatesII = function (nums) {
+const removeDuplicatesII = function (nums) {
     const v1 = () => {
         // let count = 1;
         // let j = 0;
@@ -225,7 +225,7 @@ var removeDuplicatesII = function (nums) {
     return v2();
 };
 
-// console.log(removeDuplicatesII([0, 0, 1, 1, 1, 1, 2, 3, 3])); 
+// console.log(removeDuplicatesII([0, 0, 1, 1, 1, 1, 2, 3, 3]));
 // -> 7, nums = [0, 0, 1, 1, 2, 3, 3, _, _];
 
 /**
@@ -240,40 +240,161 @@ var removeDuplicatesII = function (nums) {
  *
  * ## Follow-up:
  * Could you solve the problem in linear time and in O(1) space?
- * 
+ *
  * @param {number[]} nums
  * @return {number}
  */
-var majorityElement = function (nums) {
-    // TODO: solve in linear time and in O(1) space?
+const majorityElement = function (nums) {
     const v1 = () => {
-        const greeting = "hello";
-
-        const map = {
-            [nums[0]]: 1,
-        };
-
-        for (let i = 1; i < nums.length; i++) {
-            if (map[nums[i]]) {
-                map[nums[i]]++;
-            } else {
-                map[nums[i]] = 1;
-            }
-        }
-
-        let high = 0;
-        let winner = null;
-        for (const key in map) {
-            if (map[key] > high) {
-                high = map[key];
-                winner = key;
-            }
-        }
-
-        return winner;
+        // const map = {
+        //     [nums[0]]: 1,
+        // };
+        // for (let i = 1; i < nums.length; i++) {
+        //     if (map[nums[i]]) {
+        //         map[nums[i]]++;
+        //     } else {
+        //         map[nums[i]] = 1;
+        //     }
+        // }
+        // let high = 0;
+        // let majority = null;
+        // for (const key in map) {
+        //     if (map[key] > high) {
+        //         high = map[key];
+        //         majority = key;
+        //     }
+        // }
+        // return majority;
     };
 
-    return v1();
+    /**
+     * Boyer-Moore Voting Algorithm.
+     * Solve in linear time and in O(1) space.
+     */
+    const v2 = () => {
+        let candidate = nums[0];
+        let count = 1;
+
+        for (let i = 1; i < nums.length; i++) {
+            if (count === 0) {
+                candidate = nums[i];
+                count = 1;
+            } else if (nums[i] === candidate) {
+                count++;
+            } else {
+                count--;
+            }
+        }
+
+        return candidate;
+    };
+
+    return v2();
 };
 
-console.log(majorityElement([2, 2, 1, 1, 1, 2, 2])); // --> 2
+// console.log(majorityElement([3, 2, 3]));
+// --> 3
+
+/**
+ * # 6. Rotate Array
+ *
+ * [leetcode](https://leetcode.com/problems/rotate-array/description/)
+ *
+ * Given an integer array nums, rotate the array to the right by k steps, where k is
+ * non-negative.
+ *
+ * ## Follow-up:
+ * Could you solve the problem in linear time and in O(1) space?
+ *
+ * @param {number[]} nums
+ * @param {number} k
+ * @return {void} Do not return anything, modify nums in-place instead.
+ */
+const rotate = function (nums, k) {
+    const v1 = () => {
+        // let i = 0;
+        // let j = null;
+        // let temp = null;
+        // while (i < nums.length) {
+        //     j = i + k;
+        //     if (j > nums.length - 1) {
+        //         j = j - nums.length;
+        //     }
+        //     temp = nums[j];
+        //     nums[j] = nums[i];
+        //     nums[i] = temp;
+        //     i++;
+        // }
+    };
+
+    const v2 = () => {
+        const copy = [...nums];
+
+        let i = 0;
+        let j = 0;
+        while (i < copy.length) {
+            j = i;
+
+            for (let m = 1; m <= k; m++) {
+                j++;
+                if (j > copy.length - 1) {
+                    j = 0;
+                }
+            }
+
+            console.log(j);
+
+            nums[j] = copy[i];
+            console.log(nums);
+
+            i++;
+        }
+
+        return nums;
+    };
+
+    return v2();
+};
+
+// console.log(rotate([1, 2, 3, 4, 5, 6, 7], 3));
+// -> [5, 6, 7, 1, 2, 3, 4];
+
+/**
+ * # 7. Best Time to Buy and Sell Stock
+ * [leetcode](https://leetcode.com/problems/best-time-to-buy-and-sell-stock/description/)
+ *
+ * You are given an array prices where prices[i] is the price of a given stock on the ith
+ * day. You want to maximize your profit by choosing a single day to buy one stock and
+ * choosing a different day in the future to sell that stock.
+ *
+ * Return the maximum profit you can achieve from this transaction. If you cannot achieve
+ * any profit, return 0.
+ * @param {number[]} prices
+ * @return {number}
+ */
+const maxProfit = function (prices) {
+    let buy = prices[0];
+    let transaction = null;
+    let profit = 0;
+
+    for (let i = 0, j = i + 1; i < prices.length - 1; i++, j++) {
+        if (prices[i] < buy) {
+            buy = prices[i];
+        }
+
+        if (prices[j] > buy) {
+            transaction = prices[j] - buy;
+        }
+
+        if (transaction > profit) {
+            profit = transaction;
+        }
+    }
+
+    return profit ? profit : 0;
+};
+
+// console.log(maxProfit([7, 1, 5, 3, 6, 4]));
+// -> 5
+// console.log(maxProfit([7, 6, 4, 3, 1]));
+// -> 0
