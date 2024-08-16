@@ -181,7 +181,6 @@ const twoSum = (nums, target) => {
     };
 
     /**
-     *
      * Time Complexity: O(n)
      * Space Complexity: O(n)
      */
@@ -203,7 +202,7 @@ const twoSum = (nums, target) => {
     return v2();
 };
 
-console.log("twoSum:", twoSum([5, 5], 10));
+// console.log("twoSum:", twoSum([5, 5], 10));
 // -> 7
 
 /**
@@ -217,10 +216,93 @@ console.log("twoSum:", twoSum([5, 5], 10));
  * An anagram is a string that contains the exact same characters as another string, but
  * the order of the characters can be different.
  */
-const groupAnagrams = (strs) => {};
+const groupAnagrams = (strs) => {
+    /**
+     * Using isAnagrams()
+     */
+    const v1 = () => {
+        const results = [];
 
-// console.log(
-//     "groupAnagrams: ",
-//     groupAnagrams(["act", "pots", "tops", "cat", "stop", "hat"])
-// );
+        for (let i = 0; i < strs.length; i++) {
+            if (results.find((anagrams) => anagrams.find((x) => isAnagram(x, strs[i]))))
+                continue;
+
+            const anagrams = [];
+            anagrams.push(strs[i]);
+
+            for (let j = i + 1; j < strs.length; j++) {
+                if (isAnagram(strs[i], strs[j])) {
+                    anagrams.push(strs[j]);
+                }
+            }
+
+            results.push(anagrams);
+        }
+
+        console.log(results);
+        return results;
+    };
+
+    /**
+     * v2
+     */
+    const v2 = () => {
+        const map = {};
+
+        for (let i = 0; i < strs.length; i++) {
+            const word = strs[i].split("").sort().join("");
+
+            if (map[word]) {
+                map[word].push(strs[i]);
+            } else {
+                map[word] = [strs[i]];
+            }
+        }
+
+        return Object.values(map);
+    };
+
+    /**
+     * v3
+     * Time Complexity: O(n * m)
+     * Space Complexity: O(n * m)
+     */
+    const v3 = () => {
+        const map = {};
+        const asciiCharA = "a".charCodeAt();
+
+        for (let i = 0; i < strs.length; i++) {
+            const word = strs[i];
+            const chars = [];
+
+            for (let j = 0; j < word.length; j++) {
+                const index = word[j].charCodeAt() - asciiCharA;
+
+                if (chars[index]) {
+                    chars[index]++;
+                } else {
+                    chars[index] = 1;
+                }
+            }
+
+            if (map[chars]) {
+                map[chars].push(word);
+            } else {
+                map[chars] = [word];
+            }
+        }
+
+        console.log({ map });
+
+        return Object.values(map);
+    };
+
+    return v3();
+};
+
+console.log(
+    "groupAnagrams: ",
+    groupAnagrams(["act", "pots", "tops", "cat", "stop", "hat"])
+    // groupAnagrams(["cab", "tin", "pew", "duh", "may", "ill", "buy", "bar", "max", "doc"])
+);
 // -> [["hat"],["act", "cat"],["stop", "pots", "tops"]]
