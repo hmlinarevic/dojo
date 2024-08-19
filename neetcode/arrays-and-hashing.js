@@ -300,9 +300,239 @@ const groupAnagrams = (strs) => {
     return v3();
 };
 
-console.log(
-    "groupAnagrams: ",
-    groupAnagrams(["act", "pots", "tops", "cat", "stop", "hat"])
-    // groupAnagrams(["cab", "tin", "pew", "duh", "may", "ill", "buy", "bar", "max", "doc"])
-);
+// console.log(
+//     "groupAnagrams: ",
+//     groupAnagrams(["act", "pots", "tops", "cat", "stop", "hat"]),
+//     groupAnagrams(["cab", "tin", "pew", "duh", "may", "ill", "buy", "bar", "max", "doc"])
+// );
 // -> [["hat"],["act", "cat"],["stop", "pots", "tops"]]
+
+/**
+ * ALGO: 5. Top K Frequent Elements
+ *
+ * [leetcode](https://leetcode.com/problems/top-k-frequent-elements/description/)
+ *
+ * Given an integer array nums and an integer k, return the k most frequent elements. You
+ * may return the answer in any order.
+ *
+ * Follow up: Your algorithm's time complexity must be better than O(n log n), where n is
+ * the array's size.
+ */
+const topKFrequent = (nums, k) => {
+    /**
+     * v1
+     */
+    const v1 = () => {
+        const map = {};
+        for (let i = 0; i < nums.length; i++) {
+            const number = nums[i];
+
+            if (map[number]) {
+                map[number]++;
+            } else {
+                map[number] = 1;
+            }
+        }
+
+        return Object.entries(map)
+            .sort((a, b) => a[1] > b[1] && -1)
+            .slice(0, k)
+            .map((entry) => +entry[0]);
+    };
+
+    /**
+     * v2
+     */
+    const v2 = () => {
+        const map = {};
+        const order = {};
+
+        for (let i = 0; i < nums.length; i++) {
+            const number = nums[i];
+
+            if (map[number]) {
+                map[number]++;
+            } else {
+                map[number] = 1;
+            }
+
+            if (order[map[number]]) {
+                order[map[number]].push(number);
+            } else {
+                order[map[number]] = [number];
+            }
+        }
+
+        console.log({ order });
+        const arr = Object.values(order).slice(-k).flat();
+        console.log({ arr });
+        // const result = [...new Set(arr)];
+        // return result;
+    };
+
+    return v2();
+};
+
+// console.log(topKFrequent([4, 1, -1, 2, -1, 2, 3], 2));
+// console.log(topKFrequent([-1, -1], 1));
+// -> [2, 3]
+
+/** ALGO: 6. String Encode and Decode
+ *
+ * Design an algorithm to encode a list of strings to a single string. The encoded string
+ * is then decoded back to the original list of strings.
+ *
+ * Please implement encode and decode.
+ */
+const encodeDecode = (strs) => {
+    /**
+     * v1
+     */
+    const v1 = () => {
+        const encode = () => {
+            if (!strs.length) return strs;
+
+            let encoded = "";
+
+            for (let i = 0; i < strs.length; i++) {
+                encoded += strs[i];
+                encoded += ":s"; // separate words
+            }
+
+            console.log("encoded", { strs, encoded });
+            return encoded;
+        };
+
+        const decode = (str) => {
+            if (!str || str === " ") {
+                return [str];
+            }
+
+            const decoded = [];
+            let word = "";
+
+            for (let i = 0; i < str.length; i++) {
+                if (str[i] === ":" && str[i + 1] === "s") {
+                    decoded.push(word);
+                    word = "";
+                    i += 2;
+                }
+
+                word += str[i];
+            }
+
+            console.log("decoded", { str, decoded });
+            return decoded;
+        };
+
+        return decode(encode(strs));
+    };
+
+    /**
+     * v2
+     *
+     * Encode and decode funcion share the same context (this.store).
+     */
+    const v2 = () => {
+        const encode = () => {
+            this.store = {};
+            let encoded = "";
+
+            for (let i = 0; i < strs.length; i++) {
+                this.store[i] = strs[i].length + encoded.length;
+
+                encoded += strs[i];
+            }
+
+            console.log(this.store);
+            console.log("encoded", { encoded });
+            return encoded;
+        };
+
+        const decode = (str) => {
+            const decoded = [];
+
+            let buffer = "";
+            for (let i = 0, j = 0; i < str.length; i++) {
+                const lastCharIndex = this.store[j] - 1;
+                buffer += str[i];
+
+                if (i === lastCharIndex) {
+                    decoded.push(buffer);
+                    buffer = "";
+                    j++;
+                }
+            }
+
+            console.log("decoded", { decoded });
+            return decoded;
+        };
+
+        return decode(encode(strs));
+    };
+
+    /**
+     * v3
+     *
+     * Encode and decode are stateless.
+     */
+    const v3 = () => {
+        const encode = () => {
+            let encoded = "";
+
+            strs.forEach((str) => {
+                encoded += str.length + "#" + str;
+            });
+
+            console.log("encoded", { encoded });
+            return encoded;
+        };
+
+        const decode = (str) => {
+            const decoded = [];
+
+            let isSelect = false;
+            let chars = "";
+            let buffer = "";
+
+            for (let i = 0; i < str.length; i++) {
+
+                if (str[i] === "#" && !isSelect) {
+                    isSelect = true;
+                } 
+                
+                if (isSelect) {
+                    buffer += str[i];
+                } else {
+                    chars += str[i];
+                }
+
+                if (buffer.length == chars) {
+                    decoded.push(buffer)
+                    buffer = "";
+                    chars = "";
+                    isSelect = false;
+                }
+
+                if (i === 23 ) {
+                    console.log({isSelect, chars})
+                }
+
+            }
+
+            return decoded;
+        };
+
+        return decode(encode(strs));
+    };
+
+    return v3();
+};
+
+// console.log(encodeDecode(["","   ","!@#$%^&*()_+","LongStringWithNoSpaces","Another, String With, Commas"]))
+console.log(encodeDecode(["#1kjkasjdkajsdka,.d","","   ","","   ", "x"]))
+// console.log(encodeDecode(["1##neet", "##code#", "love", "#1you"]));
+// console.log(encodeDecode([" "]));
+// console.log(encodeDecode([]));
+
+// -> "[4,8,12,15]neetcodeloveyou"
